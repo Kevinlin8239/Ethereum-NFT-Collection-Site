@@ -3,12 +3,13 @@ import "./styles/App.css";
 import twitterLogo from "./assets/twitter-logo.svg";
 import { ethers } from "ethers";
 import myEpicNft from "./utils/MyEpicNFT.json";
+
 // Constants
 const TWITTER_HANDLE = "kevinlin823961";
 const TWITTER_LINK = `https://twitter.com/${TWITTER_HANDLE}`;
 const OPENSEA_LINK = "";
 const TOTAL_MINT_COUNT = 50;
-const CONTRACT_ADDRESS = "0x5796fd32963f6a4ff8a0739C20b97f04f9BF30ba";
+const CONTRACT_ADDRESS = "0x8DcAb28de8237D72fc481683f50894a2b5BA40FD";
 
 const App = () => {
   const [currentAccount, setCurrentAccount] = useState("");
@@ -40,6 +41,16 @@ const App = () => {
   const connectWallet = async () => {
     try {
       const { ethereum } = window;
+
+      // check whether the wallet is in rinkeby network!
+      let chainId = await ethereum.request({ method: "eth_chainId" });
+      console.log("Connected to chain " + chainId);
+
+      // String, hex code of the chainId of the Rinkebey test network
+      const rinkebyChainId = "0x4";
+      if (chainId !== rinkebyChainId) {
+        alert("You are not connected to the Rinkeby Test Network!");
+      }
 
       if (!ethereum) {
         alert("Get MetaMask!");
@@ -109,6 +120,9 @@ const App = () => {
         let nftTxn = await connectedContract.makeAnEpicNFT();
 
         console.log("Mining...please wait.");
+        alert(
+          "Your NFT is minting, please wait for second until next notification pop up!"
+        );
         await nftTxn.wait();
 
         console.log(

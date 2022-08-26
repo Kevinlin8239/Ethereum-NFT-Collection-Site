@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.0;
+pragma solidity ^0.8.1;
 
 // this helper functions is used to convert SVG and JSON to base64.
 /// [MIT License]

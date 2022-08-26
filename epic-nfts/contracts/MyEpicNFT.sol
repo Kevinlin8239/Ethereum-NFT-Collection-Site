@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: UNLICENSED
 
-pragma solidity 0.8.1;
+pragma solidity ^0.8.1;
 
 import "@openzeppelin/contracts/utils/Strings.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
@@ -9,8 +9,8 @@ import "hardhat/console.sol";
 import { Base64 } from "./libraries/Base64.sol";
 
 
-
 contract MyEpicNFT is ERC721URIStorage {
+  // counters is used to track tokenIds.
   using Counters for Counters.Counter;
   Counters.Counter private _tokenIds;
   
@@ -27,14 +27,14 @@ contract MyEpicNFT is ERC721URIStorage {
   event NewEpicNFTMinted(address sender, uint256 tokenId);
 
 
-
-  constructor() ERC721 ("SquareNFT", "SQUARE") {
-    console.log("This is my NFT contract. Woah!");
+  // after the contract is deployed, then this constructor function will be execuate.
+  constructor() ERC721 ("MagicBoxNFT", "MAGBOX") {
+    console.log("This is my on chain NFT!");
   }
 
   function pickRandomFirstWord(uint256 tokenId) public view returns (string memory) {
     uint256 rand = random(string(abi.encodePacked("FIRST_WORD", Strings.toString(tokenId))));
-    // Squash the # between 0 and the length of the array to avoid going out of bounds.
+    // Squash the # between 0 and the length of the array to avoid going out of range.
     rand = rand % firstWords.length;
     return firstWords[rand];
   }
@@ -51,7 +51,7 @@ contract MyEpicNFT is ERC721URIStorage {
     return thirdWords[rand];
   }
   
-  // give random color here.
+  // give random backgroudnd color here.
   function pickRandomColor(uint256 tokenId) public view returns (string memory) {
     uint256 rand = random(string(abi.encodePacked("COLOR", Strings.toString(tokenId))));
     rand = rand % colors.length;
@@ -73,7 +73,7 @@ contract MyEpicNFT is ERC721URIStorage {
     string memory randomColor = pickRandomColor(newItemId);
     string memory finalSvg = string(abi.encodePacked(svgPartOne, randomColor, svgPartTwo, combinedWord, "</text></svg>"));
 
-    // Get all the JSON metadata in place and base64 encode it.
+    // Get all the JSON metadata in place and use base64 encode it. important here!
     string memory json = Base64.encode(
         bytes(
             string(
